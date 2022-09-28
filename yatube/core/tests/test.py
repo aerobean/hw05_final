@@ -4,7 +4,7 @@ from django.test import TestCase
 
 
 class ErrorTemplateTestClass(TestCase):
-    def test_error_page(self):
+    def test_404_error_page(self):
         response = self.client.get('/nonexisting-page/')
         self.assertEqual(
             response.status_code,
