@@ -32,7 +32,6 @@ def group_posts(request, slug):
         'post_list': get_page_context(request, posts),
     }
     template = 'posts/group_list.html'
-    # context.update(get_page_context(posts, request))
     return render(request, template, context)
 
 
@@ -60,7 +59,7 @@ def post_detail(request, post_id):
     user_profile = post.author
     count_posts = user_profile.posts.count()
     form = CommentForm()
-    comments = post.comments.all().select_related('comments', 'author')
+    comments = post.comments.all().select_related('post', 'author')
     context = {
         'post': post,
         'count_posts': count_posts,

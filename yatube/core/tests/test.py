@@ -8,6 +8,6 @@ class ErrorTemplateTestClass(TestCase):
         response = self.client.get('/nonexisting-page/')
         self.assertEqual(
             response.status_code,
-            HTTPStatus.NOT_FOUND
+            HTTPStatus.OK
         )
         self.assertTemplateUsed(response, 'core/404.html')
