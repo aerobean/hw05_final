@@ -27,7 +27,7 @@
       </a>
     {% endif %}
     <article>    
-    {% for post in post_list %}
+    {% for post in page_obj %}
       <ul>
         <li>
           Дата публикации: {{ post.pub_date|date:"d E Y" }}

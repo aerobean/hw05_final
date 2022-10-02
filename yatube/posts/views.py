@@ -17,7 +17,7 @@ def get_page_context(request, posts):
 def index(request):
     posts = Post.objects.select_related('group', 'author').all()
     context = {
-        'post_list': get_page_context(request, posts),
+        'page_obj': get_page_context(request, posts),
     }
     template = 'posts/index.html'
     return render(request, template, context)
@@ -29,7 +29,7 @@ def group_posts(request, slug):
     context = {
         'group': group,
         'title': group.title,
-        'post_list': get_page_context(request, posts),
+        'page_obj': get_page_context(request, posts),
     }
     template = 'posts/group_list.html'
     return render(request, template, context)
@@ -45,7 +45,7 @@ def profile(request, username):
     ).exists()
     context = {
         'user_profile': user_profile,
-        'post_list': get_page_context(request, posts),
+        'page_obj': get_page_context(request, posts),
         'count_posts': count_posts,
         'following': following
     }
@@ -124,7 +124,7 @@ def follow_index(request):
     posts = Post.objects.select_related('author').filter(
         author__following__user=request.user)
     context = {
-        'post_list': get_page_context(request, posts)
+        'page_obj': get_page_context(request, posts)
     }
     return render(request, template, context)
 
