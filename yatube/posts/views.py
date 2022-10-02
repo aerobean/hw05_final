@@ -7,17 +7,18 @@ from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post, User
 
 
-def get_page_context(queryset, request):
-    paginator = Paginator(queryset, settings.ITEMS_PER_PAGE)
+def get_page_context(request, posts):
+    paginator = Paginator(posts, settings.ITEMS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return {
-        'page_obj': page_obj,
-    }
+    return page_obj
 
 
 def index(request):
-    context = get_page_context(Post.objects.all(), request)
+    posts = Post.objects.select_related('group', 'author').all()
+    context = {
+        'post_list': get_page_context(request, posts),
+    }
     template = 'posts/index.html'
     return render(request, template, context)
 
@@ -28,16 +29,16 @@ def group_posts(request, slug):
     context = {
         'group': group,
         'title': group.title,
-        'post_list': posts,
+        'post_list': get_page_context(request, posts),
     }
-    context.update(get_page_context(posts, request))
     template = 'posts/group_list.html'
+    # context.update(get_page_context(posts, request))
     return render(request, template, context)
 
 
 def profile(request, username):
     user_profile = get_object_or_404(User, username=username)
-    posts = Post.objects.all().filter(author__username=username)
+    posts = user_profile.posts.all()
     count_posts = posts.count()
     following = request.user.is_authenticated and Follow.objects.filter(
         user=request.user,
@@ -45,21 +46,21 @@ def profile(request, username):
     ).exists()
     context = {
         'user_profile': user_profile,
-        'post_list': posts,
+        'post_list': get_page_context(request, posts),
         'count_posts': count_posts,
-        'following': following,
+        'following': following
     }
     template = 'posts/profile.html'
-    context.update(get_page_context(posts, request))
+
     return render(request, template, context)
 
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     user_profile = post.author
-    count_posts = Post.objects.all().filter(author=user_profile).count()
+    count_posts = user_profile.posts.count()
     form = CommentForm()
-    comments = post.comments.all()
+    comments = post.comments.all().select_related('comments', 'author')
     context = {
         'post': post,
         'count_posts': count_posts,
@@ -81,7 +82,7 @@ def post_create(request):
     post = form.save(commit=False)
     post.author = request.user
     post.save()
-    return redirect('posts:profile', username=post.author)
+    return redirect('posts:profile', username=request.user)
 
 
 @login_required
@@ -122,7 +123,8 @@ def add_comment(request, post_id):
 def follow_index(request):
     template = 'posts/follow.html'
     context = get_page_context(
-        Post.objects.filter(author__following__user=request.user), request
+        Post.objects.select_related('author').filter(
+            author__following__user=request.user), request
     )
     return render(request, template, context)
 

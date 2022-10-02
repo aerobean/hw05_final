@@ -17,6 +17,7 @@ class Group(models.Model):
     description = models.TextField(
         verbose_name='Описание группы'
     )
+    pub_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
@@ -31,6 +32,7 @@ class Post(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='posts',
         verbose_name='Автор'
     )
     group = models.ForeignKey(
@@ -46,11 +48,12 @@ class Post(models.Model):
     image = models.ImageField(
         'Картинка',
         upload_to='posts/',
-        blank=True
+        blank=True,
+        help_text='Добавьте картинку'
     )
 
     class Meta:
-        ordering = ['-pub_date']
+        ordering = ('-pub_date',)
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
 
@@ -83,7 +86,7 @@ class Follow(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="follower",
+        related_name='follower',
         verbose_name='Подписчик',
     )
     author = models.ForeignKey(
@@ -92,3 +95,9 @@ class Follow(models.Model):
         related_name='following',
         verbose_name='Автор',
     )
+
+    class Meta:
+        constraints = [models.UniqueConstraint(
+            fields=['user', 'author'],
+            name='unique_user_author',
+        )]
