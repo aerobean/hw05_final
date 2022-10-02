@@ -42,7 +42,7 @@ class PostsURLTests(TestCase):
             f'/group/{self.group.slug}/': HTTPStatus.OK,
             f'/profile/{self.user.username}/': HTTPStatus.OK,
             f'/posts/{self.post.id}/': HTTPStatus.OK,
-            '/unexisting_page/': HTTPStatus.OK
+            '/unexisting_page/': HTTPStatus.NOT_FOUND
         }
 
         for url, status in url_status_code.items():
