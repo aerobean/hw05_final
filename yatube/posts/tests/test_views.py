@@ -70,7 +70,7 @@ class PostViewsTests(TestCase):
 
     def _check_post_details(self, response, object_type):
         if object_type == 'page':
-            object_for_tests = response.context['page_obj'][0]
+            object_for_tests = response.context['post_list'][0]
         else:
             object_for_tests = response.context['post']
         post_id_0 = object_for_tests.id
@@ -116,14 +116,14 @@ class PostViewsTests(TestCase):
         response = self.authorised_client.get(reverse(
             'posts:group_list', kwargs={'slug': self.another_group.slug})
         )
-        post_not_in_group = response.context['page_obj']
+        post_not_in_group = response.context['post_list']
         self.assertNotIn(self.post, post_not_in_group)
 
     def test_post_not_in_another_user_profile(self):
         response = self.another_authorised_client.get(
             reverse('posts:profile', kwargs={'username': self.another_user})
         )
-        post_not_in_another_user = response.context['page_obj']
+        post_not_in_another_user = response.context['post_list']
         self.assertNotIn(self.post, post_not_in_another_user)
 
     def test_create_view_context(self):
@@ -239,13 +239,13 @@ class PostViewsTests(TestCase):
         response_follower = self.another_authorised_client.get(
             reverse('posts:follow_index')
         )
-        follow_obj = response_follower.context['page_obj'][0]
+        follow_obj = response_follower.context['post_list'][0]
         post_id = follow_obj.pk
         post_text = follow_obj.text
 
         self.assertEqual(post_id, post_test_follow.id)
         self.assertEqual(post_text, post_test_follow.text)
-        self.assertEqual(len(response_follower.context['page_obj']), 1)
+        self.assertEqual(len(response_follower.context['post_list']), 1)
 
     def test_not_follower_do_not_get_updates_from_author(self):
 
@@ -261,7 +261,7 @@ class PostViewsTests(TestCase):
             reverse('posts:follow_index')
         )
 
-        self.assertEqual(len(response_non_follower.context['page_obj']), 0)
+        self.assertEqual(len(response_non_follower.context['post_list']), 0)
 
 
 class PaginatorViewsTest(TestCase):
@@ -302,7 +302,7 @@ class PaginatorViewsTest(TestCase):
             with self.subTest(view=view):
                 response = self.authorised_client.get(view)
                 self.assertEqual(
-                    len(response.context['page_obj']), self.posts_per_page
+                    len(response.context['post_list']), self.posts_per_page
                 )
 
     def test_second_page_contains_left_posts(self):
@@ -319,6 +319,6 @@ class PaginatorViewsTest(TestCase):
             with self.subTest(view=view):
                 response = self.authorised_client.get(view)
                 self.assertEqual(
-                    len(response.context['page_obj']),
+                    len(response.context['post_list']),
                     int(self.posts_quantity - self.posts_per_page)
                 )

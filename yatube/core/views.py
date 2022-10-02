@@ -18,5 +18,6 @@ def csrf_failure(request, reason=''):
 def server_error(request):
     return render(
         request, 'core/500.html',
+        {'path': request.path},
         HTTPStatus.INTERNAL_SERVER_ERROR
     )

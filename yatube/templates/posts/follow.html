@@ -12,7 +12,7 @@
   <div class="container py-5">     
     <h1>Обновления моих подписок</h1>
     {% cache 20 index_page page_obj.number %}
-    {% for post in page_obj %}
+    {% for post in post_list %}
       {% include 'posts/includes/post_list.html' %}
       {% if post.group %}
         <a href="{% url 'posts:group_list' post.group.slug %}">
