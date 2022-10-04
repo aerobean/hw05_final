@@ -6,18 +6,18 @@
 {% endblock %} 
 
 {% block content %}
-  <div class="mb-5">
+  <div class="container py-5">
     <p>
       Все посты пользователя {{ user_profile.get_full_name }}
     </p>
     <h3>Всего постов: {{ count_posts }}</h3>   
     {% if following %}
-    <a
-      class="btn btn-lg btn-light"
-      href="{% url 'posts:profile_unfollow' user_profile.username %}" role="button"
-    >
-      Отписаться
-    </a>
+      <a
+        class="btn btn-lg btn-light"
+        href="{% url 'posts:profile_unfollow' user_profile.username %}" role="button"
+      >
+        Отписаться
+      </a>
     {% else %}
       <a
         class="btn btn-lg btn-primary"
@@ -50,5 +50,5 @@
     {% endfor %}
     </article>         
   </div>
-    {% include 'includes/paginator.html' %}
+{% include 'includes/paginator.html' %}
 {% endblock %} 

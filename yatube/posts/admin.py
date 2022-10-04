@@ -15,17 +15,14 @@ class GroupAdmin(admin.ModelAdmin):
     list_display = ('pk',
                     'slug',
                     'title',
-                    'pub_date',
                     'description',
                     )
     search_fields = ('title',)
-    list_filter = ('pub_date',)
     empty_value_display = '-пусто-'
 
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('pk', 'author', 'created', 'text', 'post',)
-    search_fields = ('title',)
     list_filter = ('created',)
     empty_value_display = '-пусто-'
 

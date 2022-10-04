@@ -19,10 +19,10 @@
           все записи группы
         </a>
       {% endif %}
-    {% if not forloop.last %}<hr>{% endif %}
-      </article>
+      {% if not forloop.last %}<hr>{% endif %}
+        </article>
     {% endfor %} 
     {% endcache %} 
   </div>  
-  {% include 'includes/paginator.html' %}
+{% include 'includes/paginator.html' %}
 {% endblock %} 

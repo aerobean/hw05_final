@@ -17,7 +17,6 @@ class Group(models.Model):
     description = models.TextField(
         verbose_name='Описание группы'
     )
-    pub_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
@@ -66,8 +65,8 @@ class Comment(models.Model):
         Post,
         related_name='comments',
         on_delete=models.CASCADE,
-        verbose_name='Комментарии',
-        help_text='Комментарии к посту'
+        verbose_name='Пост',
+        help_text='Текст поста'
     )
     author = models.ForeignKey(
         User,

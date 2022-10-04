@@ -1,5 +1,5 @@
 {% load thumbnail %}
-<li>
+  <li>
     Автор: {{ post.author.get_full_name }}
     <a href="{% url 'posts:profile' post.author.username %}">
       все посты пользователя
@@ -8,11 +8,10 @@
   <li>
     Дата публикации: {{ post.pub_date|date:"d E Y" }}
   </li>
-</ul>
-<p>
-  {% thumbnail post.image "960x390" crop="center" upscale=True as im %}
-  <img class="card-img my-2" src="{{ im.url }}">
-  {% endthumbnail %}
-  {{ post.text }}
-</p>
-<a href="{% url 'posts:post_detail' post.id %}">подробная информация</a> </br>
+  <p>
+    {% thumbnail post.image "960x390" crop="center" upscale=True as im %}
+    <img class="card-img my-2" src="{{ im.url }}">
+    {% endthumbnail %}
+    {{ post.text }}
+  </p>
+  <a href="{% url 'posts:post_detail' post.id %}">подробная информация</a> </br>
