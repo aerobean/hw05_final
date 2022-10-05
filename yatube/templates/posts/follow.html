@@ -8,21 +8,20 @@
 
 {% block content %}
 {% include 'posts/includes/switcher.html' %}
+  
+  <h1>Обновления моих подписок</h1>
+  {% cache 20 index_page page_obj.number %}
+  {% for post in page_obj %}
+    {% include 'posts/includes/post_list.html' %}
+    {% if post.group %}
+      <a href="{% url 'posts:group_list' post.group.slug %}">
+        все записи группы
+      </a>
+    {% endif %}
+    {% if not forloop.last %}<hr>{% endif %}
+      </article>
+  {% endfor %} 
+  {% endcache %} 
 
-  <div class="container py-5">     
-    <h1>Обновления моих подписок</h1>
-    {% cache 20 index_page page_obj.number %}
-    {% for post in page_obj %}
-      {% include 'posts/includes/post_list.html' %}
-      {% if post.group %}
-        <a href="{% url 'posts:group_list' post.group.slug %}">
-          все записи группы
-        </a>
-      {% endif %}
-      {% if not forloop.last %}<hr>{% endif %}
-        </article>
-    {% endfor %} 
-    {% endcache %} 
-  </div>  
 {% include 'includes/paginator.html' %}
 {% endblock %} 

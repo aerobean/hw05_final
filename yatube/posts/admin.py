@@ -24,6 +24,7 @@ class GroupAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('pk', 'author', 'created', 'text', 'post',)
     list_filter = ('created',)
+    search_fields = ('text',)
     empty_value_display = '-пусто-'
 
 
