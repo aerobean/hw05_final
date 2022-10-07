@@ -1,17 +1,30 @@
 {% load thumbnail %}
-  <li>
-    Автор: {{ post.author.get_full_name }}
-    <a href="{% url 'posts:profile' post.author.username %}">
-      все посты пользователя
-    </a>
-  </li>
-  <li>
-    Дата публикации: {{ post.pub_date|date:"d E Y" }}
-  </li>
-  <p>
-    {% thumbnail post.image "960x390" crop="center" upscale=True as im %}
+
+<article>
+  <ul>
+    <li>
+      Автор: 
+      <a href="{% url 'posts:profile' post.author.username %}">
+        {{ post.author.get_full_name }}
+      </a>
+    </li>
+      {% if post.group and show_group_link %}
+        <li>
+        Группа: 
+          <a href="{% url 'posts:group_list' post.group.slug %}">
+            {{ post.group.title }}
+          </a>
+        </li>
+      {% endif %}
+    <li>
+      Дата публикации: {{ post.pub_date|date:"d E Y" }}
+    </li>
+  </ul>
+  {% thumbnail post.image "960x390" crop="center" upscale=True as im %}
     <img class="card-img my-2" src="{{ im.url }}">
-    {% endthumbnail %}
+  {% endthumbnail %}
+  <p>
     {{ post.text }}
   </p>
   <a href="{% url 'posts:post_detail' post.id %}">подробная информация</a> </br>
+</article>

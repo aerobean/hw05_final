@@ -1,27 +1,19 @@
 {% extends 'base.html' %}
-{% load thumbnail %}
-{% load cache %}
+{% load thumbnail cache %}
 
-{% block title %}
-  Обновления моих подписок
-{% endblock %} 
+{% block title %}Обновления моих подписок{% endblock %} 
 
 {% block content %}
-{% include 'posts/includes/switcher.html' %}
+  {% include 'posts/includes/switcher.html' with follow=True %}
   
   <h1>Обновления моих подписок</h1>
-  {% cache 20 index_page page_obj.number %}
-  {% for post in page_obj %}
-    {% include 'posts/includes/post_list.html' %}
-    {% if post.group %}
-      <a href="{% url 'posts:group_list' post.group.slug %}">
-        все записи группы
-      </a>
-    {% endif %}
-    {% if not forloop.last %}<hr>{% endif %}
-      </article>
-  {% endfor %} 
-  {% endcache %} 
-
-{% include 'includes/paginator.html' %}
+  <article>
+    {% cache 20 index_page page_obj.number %}
+      {% for post in page_obj %}
+        {% include 'posts/includes/post_list.html' %}
+        {% if not forloop.last %}<hr>{% endif %}
+      {% endfor %} 
+    {% endcache %} 
+  </article>
+  {% include 'includes/paginator.html' %}
 {% endblock %} 

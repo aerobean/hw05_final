@@ -2,10 +2,8 @@
 {% load user_filters thumbnail %}
 
 {% block title %}
-  {% if is_edit %}
-    Редактировать пост
-  {% else %}
-    Новый пост
+  {% if is_edit %}Редактировать пост
+  {% else %}Новый пост
   {% endif %}
 {% endblock %} 
 
@@ -22,16 +20,9 @@
         </div>
         <div class="card-body">
           {% if form.errors %}
-            {% for field in form %}
-              {% for error in field.errors %}            
-                <div class="alert alert-danger">
-                  {{ error|escape }}
-                </div>
-              {% endfor %}
-            {% endfor %}
             {% for error in form.non_field_errors %}
               <div class="alert alert-danger">
-                {{ error|escape }}
+                {{ error }}
               </div>
             {% endfor %}
           {% endif %}     
@@ -49,12 +40,11 @@
                 {{ field }}
                 {% if field.help_text %}
                   <small id="{{ field.id_for_label }}-help" class="form-text text-muted">
-                    {{ field.help_text|safe }}
+                    {{ field.help_text }}
                   </small>
                 {% endif %}
               </div>
             {% endfor %}
-            </div>
             <div class="d-flex justify-content-end">
               <button type="submit" class="btn btn-primary">
                 {% if is_edit %}

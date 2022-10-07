@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
-{% load thumbnail %}
-{% load user_filters %}
+{% load thumbnail user_filters %}
 
-{% block title %}
-  Пост {{ post.text|truncatechars:30 }}.
+{% block title %}Пост {{ post.text|truncatechars:30 }}.
 {% endblock %} 
 
 {% block content %}
@@ -18,8 +16,8 @@
         {% endthumbnail %} 
         <li class="list-group-item">
         {% if post.group %}   
-            <a href="{% url 'posts:group_list' post.group.slug %}">
-            #{{post.group.title}}</a>
+          <a href="{% url 'posts:group_list' post.group.slug %}">
+          #{{post.group.title}}</a>
         {% endif %} 
         </li>
         <li class="list-group-item">
