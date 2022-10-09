@@ -9,11 +9,9 @@
   <p> 
     {{ group.description|linebreaks }} 
   </p>
-    <article>
-      {% for post in page_obj %}
-        {% include 'posts/includes/post_list.html' %}
-        {% if not forloop.last %}<hr>{% endif %}
-      {% endfor %}
-    </article>
+  {% for post in page_obj %}
+    {% include 'posts/includes/post_list.html' with no_group_link=True %}
+    {% if not forloop.last %}<hr>{% endif %}
+  {% endfor %}
   {% include 'includes/paginator.html' %}
 {% endblock %} 
