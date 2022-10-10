@@ -18,6 +18,7 @@ TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class PostViewsTests(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -35,15 +36,18 @@ class PostViewsTests(TestCase):
         cls.authorised_client_follow = Client()
         cls.authorised_client_follow.force_login(cls.user_follow)
 
-        single_pix_png = (
-            b'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVE'
-            b'UAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIh'
-            b'vDMAAAAASUVORK5CYII='
+        single_pix_gif = (
+            b'\x47\x49\x46\x38\x39\x61\x02\x00'
+            b'\x01\x00\x80\x00\x00\x00\x00\x00'
+            b'\xFF\xFF\xFF\x21\xF9\x04\x00\x00'
+            b'\x00\x00\x00\x2C\x00\x00\x00\x00'
+            b'\x02\x00\x01\x00\x00\x02\x02\x0C'
+            b'\x0A\x00\x3B'
         )
         test_image = SimpleUploadedFile(
-            name='test_image.png',
-            content=single_pix_png,
-            content_type='image/png'
+            name='test_image.gif',
+            content=single_pix_gif,
+            content_type='image/gif'
         )
 
         cls.group = Group.objects.create(

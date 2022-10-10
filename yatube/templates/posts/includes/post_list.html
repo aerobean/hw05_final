@@ -2,17 +2,17 @@
 
 <article>
   <ul>
-    {% if not no_profile_link %}
-    <li>
-      Автор: 
-      <a href="{% url 'posts:profile' post.author.username %}">
-        {{ post.author.get_full_name }}
-      </a>
-    </li>
+    {% if show_profile_link %}
+      <li>
+        Автор: 
+        <a href="{% url 'posts:profile' post.author.username %}">
+          {{ post.author.get_full_name }}
+        </a>
+      </li>
     {% endif %}
-    <!-- Ссылка yf группу будет под ссылкой на профиль автора,
+    <!-- Ссылка на группу будет под ссылкой на профиль автора,
       так получается аккуратнее и логичнее -->
-    {% if not no_group_link and post.group %}
+    {% if show_group_link and post.group %}
       <li>
         Группа: 
         <a href="{% url 'posts:group_list' post.group.slug %}">

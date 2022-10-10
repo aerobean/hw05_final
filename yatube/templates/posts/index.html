@@ -9,7 +9,7 @@
 <h1>Последние обновления на сайте</h1>
   {% cache 20 index_page page_obj.number %}
     {% for post in page_obj %}  
-      {% include 'posts/includes/post_list.html' %}
+      {% include 'posts/includes/post_list.html' with show_profile_link=True show_group_link=True %}
       {% if not forloop.last %}<hr>{% endif %}
     {% endfor %}
   {% endcache %}
