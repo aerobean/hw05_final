@@ -152,10 +152,10 @@ class PostFormsTests(TestCase):
                              target_status_code=HTTPStatus.OK,
                              msg_prefix='', fetch_redirect_response=False)
 
-        test_comment = Comment.objects.order_by('-created').first()
+        test_comment = Comment.objects.first()
         self.assertEqual(test_comment.text, form_data['text'])
-        self.assertEqual(test_comment.author.username, self.user.username)
-        self.assertEqual(test_comment.post.id, self.post.id)
+        self.assertEqual(test_comment.author, self.user)
+        self.assertEqual(test_comment.post, self.post)
         self.assertEqual(Comment.objects.count(), comment_count + 1)
 
     def test_redirect_non_auth_create_comment(self):

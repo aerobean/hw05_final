@@ -23,6 +23,8 @@ class PostViewsTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
 
+        cache.clear()
+
         cls.guest_client = Client()
         cls.user = User.objects.create(username='test_user_views',)
         cls.authorised_client = Client()
@@ -79,13 +81,13 @@ class PostViewsTests(TestCase):
             object_for_tests = response.context['post']
         post_id_0 = object_for_tests.id
         post_text_0 = object_for_tests.text
-        post_author_0 = object_for_tests.author.username
-        post_group_0 = object_for_tests.group.slug
+        post_author_0 = object_for_tests.author
+        post_group_0 = object_for_tests.group
         post_image_0 = object_for_tests.image
         self.assertEqual(post_id_0, self.post.id)
         self.assertEqual(post_text_0, self.post.text)
-        self.assertEqual(post_author_0, self.post.author.username)
-        self.assertEqual(post_group_0, self.post.group.slug)
+        self.assertEqual(post_author_0, self.post.author)
+        self.assertEqual(post_group_0, self.post.group)
         self.assertEqual(post_image_0, self.post.image)
 
     def test_posts_post_on_index_view_context(self):
@@ -181,7 +183,7 @@ class PostViewsTests(TestCase):
         Post.objects.order_by('-id').first().delete()
 
         self.assertFalse(Post.objects.filter(
-            text=form_data['text'])
+            text=form_data['text']).exists()
         )
 
         response_from_cache = self.authorised_client.get(
@@ -228,7 +230,9 @@ class PostViewsTests(TestCase):
 
         followers_count_after = Follow.objects.all().count()
         self.assertEqual(followers_count_after, followers_count_before - 1)
-        self.assertFalse(Follow.objects.filter(author=author, user=follower))
+        self.assertFalse(
+            Follow.objects.filter(author=author, user=follower).exists()
+        )
 
     def test_follower_get_updates_from_author(self):
 
@@ -269,6 +273,7 @@ class PostViewsTests(TestCase):
 
 
 class PaginatorViewsTest(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -284,7 +289,7 @@ class PaginatorViewsTest(TestCase):
         )
 
         cls.posts_quantity = 13
-        cls.posts_per_page = 10
+        cls.posts_per_page = settings.ITEMS_PER_PAGE
         cls.posts_obj = []
 
         for pk in range(cls.posts_quantity):

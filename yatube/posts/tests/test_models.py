@@ -32,7 +32,3 @@ class PostModelTest(TestCase):
         for expected_name, actual_name in object_names.items():
             with self.subTest(expected_name=expected_name):
                 self.assertEqual(expected_name, actual_name)
-
-        group = PostModelTest.group
-        expected_object_name = group.title
-        self.assertEqual(expected_object_name, str(group))
